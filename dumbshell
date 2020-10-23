@@ -1,0 +1,47 @@
+#!/usr/bin/ruby
+require 'colorize';
+trap "SIGINT" do
+puts "GOT SIGINT EXITTING".red
+exit();
+end
+puts %q*
+
+ __  __  __ __  __ __
+|  \ ||  || ||\/|| | \
+|  | ||__|| ||\/|| |=|
+|__/ \____/ ||  || |_/
+
+shell
+type ##? for help
+*.green
+begin
+print "enter device name: ";
+$devname = gets.chomp;
+puts "\n using devie: #{$devname}";
+$dev = File.new($devname, "r+");
+rescue
+puts "bad name try again".red.bold
+retry
+end
+$reader = fork{while true do$dev.sysread(10) end};
+while true
+print "#{$devname} >>".yellow;
+$cmd = gets.chomp;
+case $cmd
+when "##?"
+puts %q*
+this is dumbshell
+it is USB terminal desigined for arduino that use Serial.readStr()
+and it is extremally straightfoward
+bulit in commands:
+##?	this text
+##x exit
+*.green
+when "##x"
+break
+else
+$dev.syswrite($cmd);
+end
+end
+puts "ALL OK EXITTING".green
+exit
