@@ -45,10 +45,11 @@ break
 
 when "##ht"
 $hex = true;
+puts "hex mode on";
 
 when "##at"
 $hex = false;
-
+puts "hex mode off";
 else
   $out = $cmd
   if $hex
