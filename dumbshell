@@ -1,7 +1,9 @@
 #!/usr/bin/ruby
 require 'colorize';
+
 trap "SIGINT" do
 puts "GOT SIGINT EXITTING".red
+`kill #{$reader}`
 exit();
 end
 puts %q*
@@ -45,18 +47,19 @@ break
 
 when "##ht"
 $hex = true;
-puts "hex mode on";
-
+puts "hex on";
 when "##at"
 $hex = false;
-puts "hex mode off";
+puts "hex off";
 else
-  $out = $cmd
   if $hex
-    $out = $cmd.hex 
+    $hex = $cmd.hex
+    $dev.write($hex.chr);
+  else
+  $dev.syswrite($cmd);
   end
-  $dev.syswrite($out);
+  end
 end
-end
+`kill #{$reader}`
 puts "ALL OK EXITTING".green
 exit
