@@ -28,6 +28,7 @@ while true
 print "#{$devname} >>".yellow;
 $cmd = gets.chomp;
 case $cmd
+
 when "##?"
 puts %q*
 this is dumbshell
@@ -36,11 +37,24 @@ and it is extremally straightfoward
 bulit in commands:
 ##?	this text
 ##x exit
+##at swich to text mode
+##ht swicth to hex mode
 *.green
 when "##x"
 break
+
+when "##ht"
+$hex = true;
+
+when "##at"
+$hex = false;
+
 else
-$dev.syswrite($cmd);
+  $out = $cmd
+  if $hex
+    $out = $cmd.hex 
+  end
+  $dev.syswrite($out);
 end
 end
 puts "ALL OK EXITTING".green
